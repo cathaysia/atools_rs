@@ -1,2 +1,2 @@
 [workspace]
-members = ["aproxy"]
+members = ["aproxy", "aretry"]
