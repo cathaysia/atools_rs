@@ -79,5 +79,5 @@ fn main() {
     args.extend(argv[2..].to_vec());
     debug!("cmd = {}, args = {:?}", cmd, args);
 
-    Command::new(&cmd).args(&args).spawn().unwrap().wait();
+    let _ = Command::new(&cmd).args(&args).spawn().unwrap().wait();
 }
