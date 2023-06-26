@@ -24,7 +24,10 @@ fn main() {
         let ret = Command::new(scmd).args(sargs).spawn();
         if let Ok(mut v) = ret {
             let ret = v.wait();
-            if let Ok(_) = ret {
+            if let Ok(retval) = ret {
+                if !retval.success() {
+                    continue;
+                }
                 return;
             } else {
                 continue;
