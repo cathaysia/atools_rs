@@ -9,6 +9,8 @@ struct Args {
     #[arg(short, long, default_value_t = 5)]
     count: i32,
     cmd: Vec<String>,
+    #[arg(long, default_value_t = false)]
+    always: bool,
 }
 
 fn main() {
@@ -28,7 +30,9 @@ fn main() {
                 if !retval.success() {
                     continue;
                 }
-                return;
+                if !args.always {
+                    return;
+                }
             } else {
                 continue;
             }
