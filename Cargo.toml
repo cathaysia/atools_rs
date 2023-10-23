@@ -1,2 +1,7 @@
 [workspace]
 members = ["aproxy", "aretry"]
+resolver = "1"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
