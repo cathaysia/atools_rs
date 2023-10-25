@@ -15,29 +15,50 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    if args.cmd.len() == 0 {
+    if args.cmd.is_empty() {
         return;
     }
 
     let scmd = &args.cmd[0];
     let sargs = &args.cmd[1..].to_vec();
 
-    for _ in 0..args.count {
-        let ret = Command::new(scmd).args(sargs).spawn();
-        if let Ok(mut v) = ret {
-            let ret = v.wait();
-            if let Ok(retval) = ret {
-                if !retval.success() {
+    if args.count < 0 {
+        loop {
+            let ret = Command::new(scmd).args(sargs).spawn();
+            if let Ok(mut v) = ret {
+                let ret = v.wait();
+                if let Ok(retval) = ret {
+                    if !retval.success() {
+                        continue;
+                    }
+                    if !args.always {
+                        return;
+                    }
+                } else {
                     continue;
                 }
-                if !args.always {
-                    return;
+            } else {
+                println!("{:?}", ret);
+            }
+        }
+    } else {
+        for _ in 0..args.count {
+            let ret = Command::new(scmd).args(sargs).spawn();
+            if let Ok(mut v) = ret {
+                let ret = v.wait();
+                if let Ok(retval) = ret {
+                    if !retval.success() {
+                        continue;
+                    }
+                    if !args.always {
+                        return;
+                    }
+                } else {
+                    continue;
                 }
             } else {
-                continue;
+                println!("{:?}", ret);
             }
-        } else {
-            println!("{:?}", ret);
         }
     }
 }
